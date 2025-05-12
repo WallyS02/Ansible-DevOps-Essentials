@@ -104,5 +104,23 @@ Variables can be of types:
 * **Dry-run with --check --diff**
 * **Use ansible-lint to check syntax**
 ## Inventory
-## Roles
+Inventory is a list of hosts and groups which defines nodes that will be managed, how to group them and which variable values use with them.
+
+Example of Inventory:
+```
+[<group_name>]
+<host>
+<host> ansible_port=<port> # Custom SSH port
+
+[<group_name>:vars] # Group variables
+<variable_name>=<variable_value>
+
+[<parent_group_name>:children]  # Group that contains other groups
+<group_name>
+```
+### Best practises
+* **Structure inventories** for different environments \(e.g. dev, test, prod\), static and dynamic, etc.
+* Like with Playbooks - **Use Ansible Vault to encrypt sensitive data**
+* **Use --graph and --list to visualize inventories** - ansible-inventory -i inventories/ --graph, ansible-inventory -i inventories/inventory --list
 ## Dynamic Inventory
+## Roles
