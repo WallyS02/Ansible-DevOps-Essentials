@@ -18,7 +18,7 @@ Example of Playbook:
 ```
 ---
 - name: <playbook_name>
-  hosts: <inventory_group>
+  hosts: <inventory>
   become: <yes_or_no> # Use sudo/root
   vars:
     <var_name>: <var_value>
@@ -51,6 +51,7 @@ Example of Playbook:
         <module_or_command>:
           <module_option>: <option_value>
 ```
+Run Playbooks with ```ansible-playbook -i <inventory_file> <playbook_file>``` command.
 ### Modules
 Modules are ready-to-use scripts that run specific commands \(e.g. apt, service, copy\). You can develop them on your own but you can use available ones - full list can be found at [Module Index](https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html).
 ### Handlers
@@ -151,3 +152,34 @@ cache_plugin = jsonfile
 cache_timeout = <seconds>
 ```
 ## Roles
+Roles are ready-made, stand-alone components that allow for modularizing and reusing code by grouping resources in a specific directory structure.
+
+Role's initial directory structure:
+```
+<role_name>/  
+├── tasks/            # Main tasks (main.yml)
+├── handlers/         # Handlers (main.yml)
+├── defaults/         # Default variables (lowest priority)
+├── vars/             # Variables (higher priority than defaults)
+├── files/            # Static files to copy
+├── templates/        # Jinja2 templates (*.j2)
+├── meta/             # Metadata about role, dependencies on other roles (main.yml)
+└── README.md
+```
+To generate initial template use command ```ansible-galaxy init <role_name>```.
+
+To use role in Playbook:
+```
+- name: <playbook_name>
+  hosts: <inventory>
+  roles:
+    - <role_name> # Simple call
+    - role: <role_name> # Call with additional variables
+      vars:
+        <var_name>: <var_value>
+```
+
+You can use Ansible Galaxy to use ready-made roles \(e.g. geerlingguy.docker for configuring Docker on Linux\).
+
+### Best practises
+* **Each role should perform one task and be reusable by parameterizing variables** - keep it modular and reusable
