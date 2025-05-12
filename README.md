@@ -100,7 +100,7 @@ Variables can be of types:
 ```
 ### Best practises
 * **Name and comment tasks properly** to maintain readability
-* **Use Ansible Vault to encrypt sensitive data** - ansible-vault encrypt vars/secrets.yml
+* **Use Ansible Vault to encrypt sensitive data** - ```ansible-vault encrypt vars/secrets.yml```
 * **Dry-run with --check --diff**
 * **Use ansible-lint to check syntax**
 ## Inventory
@@ -121,7 +121,7 @@ Example of Inventory:
 ### Best practises
 * **Structure inventories** for different environments \(e.g. dev, test, prod\), static and dynamic, etc.
 * Like with Playbooks - **Use Ansible Vault to encrypt sensitive data**
-* **Use --graph and --list to visualize inventories** - ansible-inventory -i inventories/ --graph, ansible-inventory -i inventories/inventory --list
+* **Use --graph and --list to visualize inventories** - ```ansible-inventory -i inventories/ --graph```, ```ansible-inventory -i inventories/inventory --list```
 ## Dynamic Inventory
 Dynamic Inventory is a mechanism that allows for generating managed nodes list based on provided infrastructure data instead of relying on static files. It is useful for cloud or container \(e.g. Kubernetes\) environments or when using infrastructure managing tools \(e.g. Terraform\) where infrastructure is ephemeral and scalable \(e.g. infrastructure was recreated or new hosts added by scaling\).
 
