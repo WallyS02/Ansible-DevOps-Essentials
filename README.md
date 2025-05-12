@@ -123,4 +123,31 @@ Example of Inventory:
 * Like with Playbooks - **Use Ansible Vault to encrypt sensitive data**
 * **Use --graph and --list to visualize inventories** - ansible-inventory -i inventories/ --graph, ansible-inventory -i inventories/inventory --list
 ## Dynamic Inventory
+Dynamic Inventory is a mechanism that allows for generating managed nodes list based on provided infrastructure data instead of relying on static files. It is useful for cloud or container \(e.g. Kubernetes\) environments or when using infrastructure managing tools \(e.g. Terraform\) where infrastructure is ephemeral and scalable \(e.g. infrastructure was recreated or new hosts added by scaling\).
+
+You can use ready-made scripts \(e.g. aws_ec2.py\) or create your own that gets data from infrastructure API and generates formatted JSON file that will be recognised as inventory file or use ready-made plugins \(e.g. amazon.aws.aws_ec2, kubernetes.core.k8s\) that are recommended.
+
+Example of Dynamic Inventory configuration using amazon.aws.aws_ec2 plugin:
+```
+plugin: amazon.aws.aws_ec2
+regions:
+  - <region_name>
+filters:
+  tag:<tag_name>: <tag_value> # Filter instances with tag
+keyed_groups:
+  - key: <key> # Create host groups based on e.g. tag
+    prefix: <prefix>
+compose:
+  ansible_host: public_ip_address # Use public IP to connect
+```
+To use Dynamic Inventory above you must install boto3 and botocore \(```pip install boto3 botocore```\) and configure ```AWS_ACCESS_KEY_ID``` and ```AWS_SECRET_ACCESS_KEY``` environment variables.
+
+To optimize using infrastructure API use cache:
+```
+# ansible.cfg
+[inventory]
+cache = yes
+cache_plugin = jsonfile
+cache_timeout = <seconds>
+```
 ## Roles
